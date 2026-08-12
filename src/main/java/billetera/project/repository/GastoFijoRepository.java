@@ -11,4 +11,6 @@ import java.util.List;
 public interface GastoFijoRepository extends JpaRepository<GastoFijo, Long> {
     @EntityGraph(attributePaths = {"categoria"})
     List<GastoFijo> findDistinctByUsuarioEmail(String email);
+
+    void deleteByUsuarioId(Long usuarioId);
 }

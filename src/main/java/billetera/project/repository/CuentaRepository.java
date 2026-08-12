@@ -15,4 +15,6 @@ public interface CuentaRepository extends JpaRepository<Cuenta, Long> {
 
     @Query("SELECT c FROM Cuenta c JOIN FETCH c.usuario WHERE c.id = :id")
     Optional<Cuenta> findByIdWithUsuario(@Param("id") Long id);
+
+    void deleteByUsuarioId(Long usuarioId);
 }

@@ -2,6 +2,7 @@ package billetera.project.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "usuarios")
@@ -25,5 +26,9 @@ public class Usuario {
 
     @Column(name = "foto_perfil")
     private String fotoPerfil;
+
+    @Column(name = "fecha_creacion", nullable = false, updatable = false)
+    @Builder.Default
+    private LocalDateTime fechaCreacion = LocalDateTime.now();
 
 }

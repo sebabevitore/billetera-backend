@@ -26,4 +26,8 @@ public interface VinculoParejaRepository extends JpaRepository<VinculoPareja, Lo
     // Obtener las invitaciones que el usuario recibió y están PENDIENTES
     @EntityGraph(attributePaths = {"usuario1", "usuario2"})
     List<VinculoPareja> findByUsuario2IdAndEstado(Long usuario2Id, EstadoVinculo estado);
+
+    @org.springframework.data.jpa.repository.Modifying
+    @Query("DELETE FROM VinculoPareja v WHERE v.usuario1.id = :usuarioId OR v.usuario2.id = :usuarioId")
+    void deleteByUsuario1IdOrUsuario2Id(@Param("usuarioId") Long usuarioId);
 }

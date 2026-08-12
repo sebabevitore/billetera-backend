@@ -67,4 +67,6 @@ public interface TransaccionRepository extends JpaRepository<Transaccion, Long> 
         @Param("email") String email,
         @Param("anio") int anio
     );
+
+    void deleteByCuentaId(Long cuentaId);
 }
