@@ -14,5 +14,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     
     long countByEmailEndingWith(String suffix);
     
+    List<Usuario> findByEmailEndingWith(String suffix);
+    
     List<Usuario> findByEmailEndingWithAndFechaCreacionBefore(String suffix, LocalDateTime fecha);
 }

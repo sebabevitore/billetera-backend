@@ -146,10 +146,13 @@ public class DemoService {
     @Transactional
     public void limpiarUsuariosDemoAntiguos() {
         LocalDateTime haceDosHoras = LocalDateTime.now().minusHours(2);
-        List<Usuario> usuariosAntiguos = usuarioRepository.findByEmailEndingWithAndFechaCreacionBefore(DEMO_SUFFIX, haceDosHoras);
+        List<Usuario> usuariosDemo = usuarioRepository.findByEmailEndingWith(DEMO_SUFFIX);
 
-        for (Usuario usuario : usuariosAntiguos) {
-            eliminarUsuarioCompleto(usuario.getId());
+        for (Usuario usuario : usuariosDemo) {
+            // Manejo de nulls para evitar NullPointerException si hay usuarios antiguos sin fecha
+            if (usuario.getFechaCreacion() == null || usuario.getFechaCreacion().isBefore(haceDosHoras)) {
+                eliminarUsuarioCompleto(usuario.getId());
+            }
         }
     }
 

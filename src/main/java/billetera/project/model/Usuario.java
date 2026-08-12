@@ -27,7 +27,8 @@ public class Usuario {
     @Column(name = "foto_perfil")
     private String fotoPerfil;
 
-    @Column(name = "fecha_creacion", nullable = false, updatable = false)
+    @org.hibernate.annotations.CreationTimestamp
+    @Column(name = "fecha_creacion", nullable = true, updatable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
     @Builder.Default
     private LocalDateTime fechaCreacion = LocalDateTime.now();
 
