@@ -42,12 +42,14 @@ public class Transaccion {
     private Categoria categoria;
 
     @Column(name = "es_compartido", nullable = false)
+    @Builder.Default
     private Boolean esCompartido = false;
 
     @Column(name = "monto_estadistico", precision = 10, scale = 2)
     private BigDecimal montoEstadistico;
 
     @Column(name = "es_gasto_fijo", nullable = false)
+    @Builder.Default
     private Boolean esGastoFijo = false;
 
     @Column(name = "gasto_fijo_id")
