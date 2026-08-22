@@ -8,6 +8,7 @@ import billetera.project.repository.CategoriaRepository;
 import billetera.project.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -18,6 +19,7 @@ public class CategoriaService {
     private final CategoriaRepository categoriaRepository;
     private final UsuarioRepository usuarioRepository;
 
+    @Transactional
     public CategoriaResponseDTO crear(CategoriaRequestDTO dto, String email) {
         Usuario usuario = usuarioRepository.findByEmail(email)
             .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
@@ -30,6 +32,7 @@ public class CategoriaService {
             .nombre(dto.nombre())
             .usuario(usuario)
             .tipo(dto.tipo())
+            .icono(dto.icono())
             .build();
             
         categoria = categoriaRepository.save(categoria);
@@ -54,6 +57,7 @@ public class CategoriaService {
             .toList();
     }
 
+    @Transactional
     public CategoriaResponseDTO actualizar(Long id, CategoriaRequestDTO dto, String userEmail) {
         Categoria categoria = categoriaRepository.findById(id)
             .orElseThrow(() -> new IllegalArgumentException("Categoría no encontrada"));
@@ -65,6 +69,9 @@ public class CategoriaService {
         categoria.setNombre(dto.nombre());
         if (dto.tipo() != null) {
             categoria.setTipo(dto.tipo());
+        }
+        if (dto.icono() != null) {
+            categoria.setIcono(dto.icono());
         }
         
         categoria = categoriaRepository.save(categoria);
@@ -80,7 +87,8 @@ public class CategoriaService {
             categoria.getId(), 
             categoria.getNombre(), 
             categoria.getUsuario().getId(),
-            categoria.getTipo()
+            categoria.getTipo(),
+            categoria.getIcono()
         );
     }
 }

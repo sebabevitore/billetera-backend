@@ -7,5 +7,6 @@ import billetera.project.model.TipoTransaccion;
 
 public record CategoriaRequestDTO(
     @NotBlank String nombre,
-    @NotNull TipoTransaccion tipo
+    @NotNull TipoTransaccion tipo,
+    String icono
 ) {}

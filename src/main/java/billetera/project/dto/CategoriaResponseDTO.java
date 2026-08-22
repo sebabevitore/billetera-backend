@@ -6,5 +6,6 @@ public record CategoriaResponseDTO(
     Long id,
     String nombre,
     Long usuarioId,
-    TipoTransaccion tipo
+    TipoTransaccion tipo,
+    String icono
 ) {}

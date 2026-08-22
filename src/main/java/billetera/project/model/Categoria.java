@@ -2,6 +2,7 @@ package billetera.project.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "categorias")
@@ -17,6 +18,7 @@ public class Categoria {
     @Column(nullable = false)
     private String nombre;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
@@ -27,4 +29,7 @@ public class Categoria {
 
     @Column(name = "monto_limite", precision = 10, scale = 2)
     private java.math.BigDecimal montoLimite;
+
+    @Column(name = "icono")
+    private String icono;
 }

@@ -450,7 +450,8 @@ public class TransaccionService {
                 t.getEsCompartido(),
                 t.getMontoEstadistico(),
                 t.getEsGastoFijo(),
-                t.getGastoFijoId()
+                t.getGastoFijoId(),
+                t.getCategoria() != null ? t.getCategoria().getIcono() : null
         );
     }
 }

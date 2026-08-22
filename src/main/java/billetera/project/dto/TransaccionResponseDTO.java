@@ -19,5 +19,6 @@ public record TransaccionResponseDTO(
     Boolean esCompartido,
     BigDecimal montoEstadistico,
     Boolean esGastoFijo,
-    Long gastoFijoId
+    Long gastoFijoId,
+    String iconoCategoria
 ) {}
