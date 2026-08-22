@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
@@ -65,17 +66,30 @@ public class DemoService {
                 .build();
         cuentaRepository.save(cuentaPrincipal);
 
-        List<String> gastos = List.of("Supermercado", "Factura de Internet", "Cena Restaurante", "Carga de Transporte / Gasolina", "Suscripción Streaming", "Gimnasio");
-        List<String> ingresos = List.of("Sueldo Mensual", "Cobro de Honorarios");
+        Map<String, String> gastos = Map.of(
+                "Supermercado", "🛒",
+                "Factura de Internet", "🌐",
+                "Cena Restaurante", "🍽️",
+                "Carga de Transporte / Gasolina", "⛽",
+                "Suscripción Streaming", "🎬",
+                "Gimnasio", "🏋️‍♂️"
+        );
 
-        gastos.forEach(nombre -> categoriaRepository.save(Categoria.builder()
+        gastos.forEach((nombre, icono) -> categoriaRepository.save(Categoria.builder()
                 .nombre(nombre)
+                .icono(icono)
                 .tipo(TipoTransaccion.GASTO)
                 .usuario(usuario)
                 .build()));
 
-        ingresos.forEach(nombre -> categoriaRepository.save(Categoria.builder()
+        Map<String, String> ingresosMap = Map.of(
+                "Sueldo Mensual", "💰",
+                "Cobro de Honorarios", "💼"
+        );
+
+        ingresosMap.forEach((nombre, icono) -> categoriaRepository.save(Categoria.builder()
                 .nombre(nombre)
+                .icono(icono)
                 .tipo(TipoTransaccion.INGRESO)
                 .usuario(usuario)
                 .build()));

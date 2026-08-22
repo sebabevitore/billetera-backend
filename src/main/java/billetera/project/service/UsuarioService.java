@@ -57,7 +57,8 @@ public class UsuarioService {
     @Transactional
     public Usuario procesarLoginGoogle(String idTokenString) {
         try {
-            GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(new NetHttpTransport(), new GsonFactory())
+            GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(new NetHttpTransport(),
+                    new GsonFactory())
                     .setAudience(Collections.singletonList(googleClientId))
                     .build();
 
