@@ -15,57 +15,57 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class CategoriaService {
-    
+
     private final CategoriaRepository categoriaRepository;
     private final UsuarioRepository usuarioRepository;
 
     @Transactional
     public CategoriaResponseDTO crear(CategoriaRequestDTO dto, String email) {
         Usuario usuario = usuarioRepository.findByEmail(email)
-            .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
-            
+                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
+
         if (categoriaRepository.existsByNombreIgnoreCaseAndUsuario(dto.nombre(), usuario)) {
             throw new IllegalArgumentException("La categoría ya existe");
         }
-            
+
         Categoria categoria = Categoria.builder()
-            .nombre(dto.nombre())
-            .usuario(usuario)
-            .tipo(dto.tipo())
-            .icono(dto.icono())
-            .build();
-            
+                .nombre(dto.nombre())
+                .usuario(usuario)
+                .tipo(dto.tipo())
+                .icono(dto.icono())
+                .build();
+
         categoria = categoriaRepository.save(categoria);
         return mapToDTO(categoria);
     }
 
     public CategoriaResponseDTO obtenerPorId(Long id) {
         Categoria categoria = categoriaRepository.findById(id)
-            .orElseThrow(() -> new IllegalArgumentException("Categoría no encontrada"));
+                .orElseThrow(() -> new IllegalArgumentException("Categoría no encontrada"));
         return mapToDTO(categoria);
     }
-    
+
     public List<CategoriaResponseDTO> listarPorUsuario(Long usuarioId) {
         return categoriaRepository.findByUsuarioId(usuarioId).stream()
-            .map(this::mapToDTO)
-            .toList();
+                .map(this::mapToDTO)
+                .toList();
     }
 
     public List<CategoriaResponseDTO> listarPorUsuarioEmail(String email) {
         return categoriaRepository.findByUsuarioEmail(email).stream()
-            .map(this::mapToDTO)
-            .toList();
+                .map(this::mapToDTO)
+                .toList();
     }
 
     @Transactional
     public CategoriaResponseDTO actualizar(Long id, CategoriaRequestDTO dto, String userEmail) {
         Categoria categoria = categoriaRepository.findById(id)
-            .orElseThrow(() -> new IllegalArgumentException("Categoría no encontrada"));
-            
+                .orElseThrow(() -> new IllegalArgumentException("Categoría no encontrada"));
+
         if (!categoria.getUsuario().getEmail().equals(userEmail)) {
             throw new SecurityException("No tienes permiso para modificar esta categoría");
         }
-        
+
         categoria.setNombre(dto.nombre());
         if (dto.tipo() != null) {
             categoria.setTipo(dto.tipo());
@@ -73,22 +73,26 @@ public class CategoriaService {
         if (dto.icono() != null) {
             categoria.setIcono(dto.icono());
         }
-        
+
         categoria = categoriaRepository.save(categoria);
         return mapToDTO(categoria);
     }
 
     public void eliminar(Long id) {
-        categoriaRepository.deleteById(id);
+        try {
+            categoriaRepository.deleteById(id);
+        } catch (org.springframework.dao.DataIntegrityViolationException e) {
+            throw new IllegalArgumentException(
+                    "No se puede eliminar la categoría porque tiene transacciones o gastos fijos asociados.");
+        }
     }
 
     private CategoriaResponseDTO mapToDTO(Categoria categoria) {
         return new CategoriaResponseDTO(
-            categoria.getId(), 
-            categoria.getNombre(), 
-            categoria.getUsuario().getId(),
-            categoria.getTipo(),
-            categoria.getIcono()
-        );
+                categoria.getId(),
+                categoria.getNombre(),
+                categoria.getUsuario().getId(),
+                categoria.getTipo(),
+                categoria.getIcono());
     }
 }
